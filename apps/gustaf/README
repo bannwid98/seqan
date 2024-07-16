@@ -161,7 +161,7 @@ Usage: gustaf <GENOME FASTA FILE> <READ FASTA FILE> [Options]
 
   [ -ip NUM], [ --invPen NUM ]
 
-  Inversion penalty (default 5). Added to edge weight between matches that
+  INV penalty (default 5). Added to edge weight between matches that
   map to different strands of the same database sequence. Note: Penalty is
   only added if there is no transPen already on the edge.
 

@@ -56,14 +56,14 @@ typedef Tag<OverlapLibrary_> const OverlapLibrary;
 
 /*
  * @defgroup ConsensusCallingTags Consensus Calling Tags
- * @brief Tags for consensus calling.
+ * @brief Tags for hapseq calling.
  *
  * @tag ConsensusCallingTags#MajorityVote
- * @headerfile <seqan/consensus.h>
+ * @headerfile <seqan/hapseq.h>
  * @brief Consensus based on the most common character.
  *
  * @tag ConsensusCallingTags#Bayesian
- * @headerfile <seqan/consensus.h>
+ * @headerfile <seqan/hapseq.h>
  * @brief Consensus based on a bayesian probability.
  */
 
@@ -421,8 +421,8 @@ assignGappedConsensus(FragmentStore<TSpec, TConfig>& fragStore,
 
 /*
  * @fn consensusAlignment
- * @headerfile <seqan/consensus.h>
- * @brief Compute consensus alignment.
+ * @headerfile <seqan/hapseq.h>
+ * @brief Compute hapseq alignment.
  *
  * @signature void consensusAlignment(alignmentGraph, beginEndPos[, options])
  *
@@ -435,7 +435,7 @@ assignGappedConsensus(FragmentStore<TSpec, TConfig>& fragStore,
  * @code{.cpp}
  * #include <seqan/sequence.h>
  * #include <seqan/graph_align.h>
- * #include <seqan/consensus.h>
+ * #include <seqan/hapseq.h>
  *
  * int main()
  * {
@@ -701,12 +701,12 @@ updateContig(FragmentStore<TFragSpec, TConfig>& fragStore,
     //    std::cout << std::endl;
     //}
 
-    // Create the new consensus
+    // Create the new hapseq
     typedef typename Value<TString>::Type TAlphabet;
     String<TValue> gappedCons;
     consensusCalling(mat, gappedCons, maxCoverage, TAlphabet(), MajorityVote());
 
-    // Assign new consensus
+    // Assign new hapseq
     assignGappedConsensus(fragStore, gappedCons, contigId);
 
     // Update all aligned reads
@@ -839,7 +839,7 @@ consensusCalling(String<TValue, TSpec> const& mat,
     TProbabilityDistribution backroundDist;
     resize(backroundDist, alphabetSize + 1, ((TProbability) 1 / (TProbability) (alphabetSize + 1)));
 
-    // Get an initial consensus
+    // Get an initial hapseq
     typedef typename Iterator<TCounters, Standard>::Type TCounterIt;
     TCounterIt countIt = begin(counterValues, Standard());
     TCounterIt countItEnd = end(counterValues, Standard());
@@ -874,7 +874,7 @@ consensusCalling(String<TValue, TSpec> const& mat,
         pIOld = pI;
         pIJOld = pIJ;
 
-        // Count all letters in the consensus
+        // Count all letters in the hapseq
         TProbabilityDistribution nI;
         resize(nI, alphabetSize + 1, 0);
         TPosPrDistIter itPosPrDist = begin(posPrDist, Standard());
@@ -891,7 +891,7 @@ consensusCalling(String<TValue, TSpec> const& mat,
             pI[i] = nI[i] / lenPosPrDist;
 
 
-        // Count all letters that agree / disagree with the consensus
+        // Count all letters that agree / disagree with the hapseq
         TProbabilityDistribution nIJ;
         resize(nIJ, (alphabetSize + 1) * (alphabetSize + 1), 0);
         typedef String<TValue, TSpec> TMatrix;
@@ -991,7 +991,7 @@ consensusCalling(String<TValue, TSpec> const& mat,
         }
     }
 
-    // Compute the most likely consensus
+    // Compute the most likely hapseq
     TPosPrDistIter itPosPrDist = begin(posPrDist, Standard());
     TPosPrDistIter itPosPrDistEnd = end(posPrDist, Standard());
     clear(gappedConsensus);
@@ -1032,11 +1032,11 @@ consensusCalling(FragmentStore<TFragSpec, TConfig>& fragStore,
     TSize maxCoverage;
     convertAlignment(fragStore, mat, contigId, maxCoverage);
 
-    // Call the consensus
+    // Call the hapseq
     String<TValue> gappedConsensus;
     consensusCalling(mat, gappedConsensus, maxCoverage, TAlphabet(), Bayesian());
 
-    // Assign the new consensus
+    // Assign the new hapseq
     assignGappedConsensus(fragStore, gappedConsensus, contigId);
 }
 
@@ -1060,7 +1060,7 @@ consensusCalling(String<TValue, TSpec> const& mat,
     TCounters counterValues;
     _countLetters(mat, counterValues, maxCoverage, TAlphabet() );
 
-    // Get the consensus
+    // Get the hapseq
     typedef typename Iterator<TCounters, Standard>::Type TCounterIt;
     TCounterIt countIt = begin(counterValues, Standard());
     TCounterIt countItEnd = end(counterValues, Standard());
@@ -1106,11 +1106,11 @@ consensusCalling(FragmentStore<TFragSpec, TConfig>& fragStore,
     TSize maxCoverage;
     convertAlignment(fragStore, mat, contigId, maxCoverage);
 
-    // Call the consensus
+    // Call the hapseq
     String<TValue> gappedConsensus;
     consensusCalling(mat, gappedConsensus, maxCoverage, TAlphabet(), MajorityVote());
 
-    // Assign the new consensus
+    // Assign the new hapseq
     assignGappedConsensus(fragStore, gappedConsensus, contigId);
 }
 
@@ -1136,7 +1136,7 @@ write(
     FragmentStore<TSpec, TConfig>& fragStore,
     FastaReadFormat)
 {
-//IOREV _nodoc_ what has this got to do with consensus? why is it here?
+//IOREV _nodoc_ what has this got to do with hapseq? why is it here?
     // Basic types
     typedef FragmentStore<TSpec, TConfig> TFragmentStore;
     typedef typename Size<TFragmentStore>::Type TSize;
@@ -1159,7 +1159,7 @@ write(
         convertAlignment(fragStore, mat, idCount, maxCoverage, readSlot);
         TSize len = length(mat) / maxCoverage;
 
-        // Gapped consensus sequence
+        // Gapped hapseq sequence
         typedef String<TMultiReadChar> TGappedConsensus;
         TGappedConsensus gappedConsensus;
         getGappedConsensus(fragStore, gappedConsensus, idCount);

@@ -42,7 +42,7 @@
 #include <seqan/bam_io.h>
 #include <seqan/basic.h>
 #include <seqan/bed_io.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 #include <seqan/file.h>
 #include <seqan/find.h>
 #include <seqan/gff_io.h>

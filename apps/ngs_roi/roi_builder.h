@@ -38,7 +38,7 @@
 #include <fstream>
 
 #include <seqan/roi_io.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 
 #include "record_ext.h"
 

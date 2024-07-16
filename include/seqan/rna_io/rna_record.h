@@ -194,7 +194,7 @@ public:
      *
      * This member variable is used only if biological validated data is found (T.. fields in EBPSEQ are set).
      *
-     * If @link RnaRecord::reactivity @endlink was derived as a consensus of different replicates,
+     * If @link RnaRecord::reactivity @endlink was derived as a hapseq of different replicates,
      * this indicates the standard error between samples used.
      * If only one experiment was done, this may be some measure of variation between the data in that experiment,
      * e.g. 0.2 of the standard deviation.

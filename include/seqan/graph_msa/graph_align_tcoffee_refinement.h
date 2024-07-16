@@ -404,7 +404,7 @@ _msaRefinement(String<TValue, TSpec>& mat,
     //}
 
 
-    // ReAlign the consensus with the sequence
+    // ReAlign the hapseq with the sequence
     typedef StringSet<TProfileString, Dependent<> > TStringSet;
     TStringSet pairSet;
     appendValue(pairSet, alignProf1);

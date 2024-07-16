@@ -181,7 +181,7 @@ void _setupArgumentParser(ArgumentParser & parser)
               ArgParseOption("tp", "transPen", "Interchromosomal translocation penalty", ArgParseArgument::INTEGER,
                              "INT"));
     setDefaultValue(parser, "tp", "5");
-    addOption(parser, ArgParseOption("ip", "invPen", "Inversion penalty", ArgParseArgument::INTEGER, "INT"));
+    addOption(parser, ArgParseOption("ip", "invPen", "INV penalty", ArgParseArgument::INTEGER, "INT"));
     setDefaultValue(parser, "ip", "5");
     addOption(parser,
               ArgParseOption("op", "orderPen", "Intrachromosomal order change penalty", ArgParseArgument::INTEGER,

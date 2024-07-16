@@ -38,7 +38,7 @@
 #include <fstream>
 
 #include <seqan/basic.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 
 #include <seqan/misc/svg.h>
 
@@ -48,7 +48,7 @@ SEQAN_DEFINE_TEST(test_consensus_realign_one_contig_small)
     //
     // There are many superfluous gaps in the SAM file that we will get rid of below.
     seqan2::FragmentStore<> store;
-    seqan2::CharString samPath = seqan2::getAbsolutePath("/tests/consensus/small_example.sam");
+    seqan2::CharString samPath = seqan2::getAbsolutePath("/tests/hapseq/small_example.sam");
     seqan2::BamFileIn fSamIn(toCString(samPath));
     readRecords(store, fSamIn);
 

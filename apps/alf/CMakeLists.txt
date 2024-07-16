@@ -37,7 +37,7 @@ add_definitions (-DSEQAN_REVISION="${SEQAN_REVISION}")
 add_definitions (-DSEQAN_DATE="${SEQAN_DATE}")
 
 # Update the list of file names below if you add source files to your application.
-add_executable (alf alf.cpp)
+add_executable (alf alf.cpp ../hapseq/hapSeq.cpp)
 
 # Add dependencies found by find_package (SeqAn).
 target_link_libraries (alf ${SEQAN_LIBRARIES})

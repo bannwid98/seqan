@@ -33,7 +33,7 @@
 
 #define FIONA_ALLOWINDELS    // allow for indels (chooses a less compact FragmentStore)
 
-//    // currently, consensus works only without indels
+//    // currently, hapseq works only without indels
 //    #ifndef FIONA_OVERLAP_WITH_EDIT_DISTANCE
 //        #define FIONA_CONSENSUS
 //    #endif
@@ -3308,7 +3308,7 @@ struct Overlap  // for each operation (substitution/deletion/insert) there is on
     typedef ProfileChar<Dna5, unsigned short>   TProfileValue;
     typedef String<TProfileValue>               TConsensus;
 
-    TConsensus consensus;
+    TConsensus hapseq;
 #endif
 };
 
@@ -3648,8 +3648,8 @@ if (LOOP_LEVEL != 0)
                         ov.support = 0;
                     #endif
                     #ifdef FIONA_CONSENSUS
-                        clear(ov.consensus);
-                        resize(ov.consensus, (itEEnd - itEPrefixBegin) - commonPrefix + options.maxIndelLength + 1);
+                        clear(ov.hapseq);
+                        resize(ov.hapseq, (itEEnd - itEPrefixBegin) - commonPrefix + options.maxIndelLength + 1);
                     #endif
                     }
 
@@ -3881,18 +3881,18 @@ if (LOOP_LEVEL != 0)
 //                            }
 
                         #ifdef FIONA_CONSENSUS
-                            // (only for mismatches/insertions) compute consensus of correct reads
+                            // (only for mismatches/insertions) compute hapseq of correct reads
                             // that fulfill the acceptedMismatch-critereon
                             if (indel <= 0)
                             {
-                                // reset itC and repeat comparison to increase consensus counters
-                                typename Iterator<Overlap::TConsensus, Standard>::Type itCons = begin(overlap.consensus, Standard());
+                                // reset itC and repeat comparison to increase hapseq counters
+                                typename Iterator<Overlap::TConsensus, Standard>::Type itCons = begin(overlap.hapseq, Standard());
 
                                 // there are rightOverlapLen bases right of the error
                                 itC = itCLeft + commonPrefix;
                                 itCEnd = itC + rightOverlapLen;
 
-                                // take the error (mismatch/gap in error read) into account for consensus computation
+                                // take the error (mismatch/gap in error read) into account for hapseq computation
                                 if (indel == 0)
                                     ++itCEnd;
                                 else if (indel < 0)
@@ -3900,7 +3900,7 @@ if (LOOP_LEVEL != 0)
 
                                 for (; itC < itCEnd; ++itC, ++itCons)
                                     ++(*itCons).count[ordValue(*itC)];
-                                SEQAN_ASSERT_LEQ(itCons, end(overlap.consensus, Standard()));
+                                SEQAN_ASSERT_LEQ(itCons, end(overlap.hapseq, Standard()));
                             }
                         #endif
                         }
@@ -3957,11 +3957,11 @@ if (LOOP_LEVEL != 0)
 
 #ifdef FIONA_CONSENSUS
                         TReadIterator itE = itEPrefixBegin + commonPrefix;
-                        typename Iterator<Overlap::TConsensus, Standard>::Type itCons = begin(bestCorrection[i].consensus, Standard());
+                        typename Iterator<Overlap::TConsensus, Standard>::Type itCons = begin(bestCorrection[i].hapseq, Standard());
 
                         if (indel == 0)     // mismatch
                         {
-                            // extract first consensus base
+                            // extract first hapseq base
                             correctSeq[0] = *itCons;
                             if (strand)
                                 correctSeq[0] = FunctorComplement<Dna5>()(correctSeq[0]);
@@ -3975,7 +3975,7 @@ if (LOOP_LEVEL != 0)
                         else                // gap in erroneous read (must be filled with an insertion in err. read)
                         {
                             SEQAN_ASSERT_LT(indel, 0);
-                            // extract consensus bases to determine insert
+                            // extract hapseq bases to determine insert
                             if (strand)
                             {
                                 for (int l = -indel; l > 0; ++itCons)
@@ -3987,7 +3987,7 @@ if (LOOP_LEVEL != 0)
                                     correctSeq[l] = *itCons;
                             }
                         }
-                        SEQAN_ASSERT_LEQ(itCons, end(bestCorrection[i].consensus, Standard()));
+                        SEQAN_ASSERT_LEQ(itCons, end(bestCorrection[i].hapseq, Standard()));
 
                  /*      SEQAN_OMP_PRAGMA(critical(TestConsensusOverlapsum))
                                     {
@@ -4014,25 +4014,25 @@ if (LOOP_LEVEL != 0)
 
                         if (indel == 0)
                         {
-                            // 2. add minor consensus mismatch corrections
+                            // 2. add minor hapseq mismatch corrections
                             //bool debugConsensus = false;
                             for (; itE < itEEnd; ++itE, ++itCons)
                             {
                                 unsigned maxBase = getMaxIndex(*itCons);
-                                if (maxBase == 4) continue;     // skip if N is the consensus base
+                                if (maxBase == 4) continue;     // skip if N is the hapseq base
                                 unsigned frequency = (*itCons).count[maxBase];
                                 if (frequency < 2) break;       // at least 2 suffixes need to vote for that base
                                 if ((*itCons).count[ordValue(*itE)] < frequency)
                                 {
                                     // TODO:
-                                    // (weese:) I'm not sure if we better scale the overlap-sum relative to the coverage at the anchor (front(consensus))
+                                    // (weese:) I'm not sure if we better scale the overlap-sum relative to the coverage at the anchor (front(hapseq))
                                     //          or relative to the coverage at the current base (*itCons)
                                     unsigned totalCounts = totalCount(*itCons);
                                     if(totalCounts == 0)
                                          continue;
-                                  //totalCount(*itCons /*front(consensus)*/));
+                                  //totalCount(*itCons /*front(hapseq)*/));
                                     unsigned consOverlapSum = (unsigned)((frequency * overlapSum) / totalCounts);
-                   if(consOverlapSum >1) //penalize consensus correction by one to always to major correction first
+                   if(consOverlapSum >1) //penalize hapseq correction by one to always to major correction first
                     --consOverlapSum;
                                     //unsigned testOverlapSum = (unsigned)((frequency * overlapSum) / totalCount(front(itCons)));
                                   /*  SEQAN_OMP_PRAGMA(critical(TestConsensusOverlapsum))
@@ -4052,7 +4052,7 @@ if (LOOP_LEVEL != 0)
                                     //std::cout << " by " << (Dna5)maxBase << " (support=" << (*itCons).count[maxBase] << ")" << std::endl;
                                     //debugConsensus = true;
                                 }
-                            }//go over all positions in consensus
+                            }//go over all positions in hapseq
                         }//no indel
 /*
                         if (debugConsensus)
@@ -4060,11 +4060,11 @@ if (LOOP_LEVEL != 0)
                             for(int divider = 10; divider != 0; divider /= 10)
                             {
                                 for(int xx=0; xx<positionError+1+indel; ++xx) std::cout << ' ';
-                                for(unsigned xa=0; xa<length(bestCorrection[i].consensus); ++xa)
+                                for(unsigned xa=0; xa<length(bestCorrection[i].hapseq); ++xa)
                                 {
-                                    unsigned maxBase = getMaxIndex(bestCorrection[i].consensus[xa]);
-                                    if (bestCorrection[i].consensus[xa].count[maxBase] == 0) break;
-                                    std::cout << (bestCorrection[i].consensus[xa].count[maxBase] / divider) % 10;
+                                    unsigned maxBase = getMaxIndex(bestCorrection[i].hapseq[xa]);
+                                    if (bestCorrection[i].hapseq[xa].count[maxBase] == 0) break;
+                                    std::cout << (bestCorrection[i].hapseq[xa].count[maxBase] / divider) % 10;
                                 }
                                 std::cout << std::endl;
                             }
@@ -4072,10 +4072,10 @@ if (LOOP_LEVEL != 0)
 
                             for(int xx=0; xx<indel; ++xx) std::cout << ' ';
                             std::cout << prefix(store.readSeqStore[errorReadId], positionError) << ' ';
-                            for(unsigned xa=0; xa<length(bestCorrection[i].consensus); ++xa)
+                            for(unsigned xa=0; xa<length(bestCorrection[i].hapseq); ++xa)
                             {
-                                unsigned maxBase = getMaxIndex(bestCorrection[i].consensus[xa]);
-                                if (bestCorrection[i].consensus[xa].count[maxBase] == 0) break;
+                                unsigned maxBase = getMaxIndex(bestCorrection[i].hapseq[xa]);
+                                if (bestCorrection[i].hapseq[xa].count[maxBase] == 0) break;
                                 std::cout << (Dna5)maxBase;
                             }
                             std::cout << std::endl;

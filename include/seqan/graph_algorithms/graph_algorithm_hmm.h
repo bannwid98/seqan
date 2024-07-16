@@ -956,7 +956,7 @@ template < typename TAlphabet, typename TProbability, typename TSpec, typename T
 inline void
 _profileHmmCounter(Graph<Hmm<TAlphabet, TProbability, TSpec> >& pHmm,
                     TMat const& matr,
-                    TConsensus const& consensus,
+                    TConsensus const& hapseq,
                     TSize const& numRows,
                     TSize const& numCols)
 {
@@ -994,11 +994,11 @@ _profileHmmCounter(Graph<Hmm<TAlphabet, TProbability, TSpec> >& pHmm,
     resize(currCol, numRows, 0);
     TEdgeDescriptor currEdge;
 
-    for(TSize i = 0; i<length(consensus); ++i) {
+    for(TSize i = 0; i<length(hapseq); ++i) {
         //transitionvalues
 
         //being in insertState
-        if (value(consensus, i)==gapChar){
+        if (value(hapseq, i)==gapChar){
             for(TSize j = 0; j<numRows; ++j){
                 if ((value(matr, j * numCols + i)!=gapChar)){
                     value(currCol,j) = insertState;
@@ -1022,7 +1022,7 @@ _profileHmmCounter(Graph<Hmm<TAlphabet, TProbability, TSpec> >& pHmm,
             }
         }
         //emissionvalues
-        if (value(consensus, i)==gapChar) {
+        if (value(hapseq, i)==gapChar) {
             for(TSize j = 0; j<numRows; ++j)
                 if(value(matr, j * numCols + i)!=gapChar)
                     value(value(emissionCounter, insertState), ordValue( (TAlphabet)  value(matr, j * numCols + i) ) ) += 1;
@@ -1055,7 +1055,7 @@ _profileHmmCounter(Graph<Hmm<TAlphabet, TProbability, TSpec> >& pHmm,
 template<typename TAlphabet, typename TCargo, typename TSpec, typename TConsensus>
 inline void
 _createProfileHmm(Graph<Hmm<TAlphabet, TCargo, TSpec> >& pHmm,
-                   TConsensus const& consensus)
+                   TConsensus const& hapseq)
 {
     typedef Graph<Hmm<TAlphabet, TCargo, TSpec> > TGraph;
     typedef typename Size<TGraph>::Type TSize;
@@ -1072,9 +1072,9 @@ _createProfileHmm(Graph<Hmm<TAlphabet, TCargo, TSpec> >& pHmm,
     TVertexDescriptor begState = addVertex(pHmm);
     assignBeginState(pHmm, begState);
 
-    // Add for each consensus letter 3 states
-    for (TSize i=0;i<length(consensus);++i){
-        if (value(consensus,i) == gapChar) continue;
+    // Add for each hapseq letter 3 states
+    for (TSize i=0;i<length(hapseq);++i){
+        if (value(hapseq,i) == gapChar) continue;
         addVertex(pHmm); addVertex(pHmm); addVertex(pHmm, true);
     }
 
@@ -1085,7 +1085,7 @@ _createProfileHmm(Graph<Hmm<TAlphabet, TCargo, TSpec> >& pHmm,
     TVertexDescriptor endState = addVertex(pHmm);
     assignEndState(pHmm, endState);
 
-    // Is there no consensus letter?
+    // Is there no hapseq letter?
     if (lastIState == 1) {
         clear(pHmm);
         return;
@@ -1102,8 +1102,8 @@ _createProfileHmm(Graph<Hmm<TAlphabet, TCargo, TSpec> >& pHmm,
     addEdge(pHmm, begState, dState);
 
     // Add all remaining transitions
-    for (TSize i=0;i<length(consensus);++i){
-        if (value(consensus,i) == gapChar) continue;
+    for (TSize i=0;i<length(hapseq);++i){
+        if (value(hapseq,i) == gapChar) continue;
         else if ((mState + 3) == lastIState) {
             addEdge(pHmm, iState, mState);
             addEdge(pHmm, iState, iState);

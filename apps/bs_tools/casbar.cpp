@@ -42,7 +42,7 @@
 #include <seqan/file.h>
 #include <seqan/align.h>
 #include <seqan/store.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 #include <seqan/stream.h>
 #include <seqan/bam_io.h>
 #include <seqan/parallel.h>

@@ -85,7 +85,7 @@ template <typename TValue>
 class Score<TValue, ConsensusScore>
 {
 public:
-    String<TValue> consensus_set;        // Is the alphabet character part of the consensus set for each column
+    String<TValue> consensus_set;        // Is the alphabet character part of the hapseq set for each column
 
 public:
     Score() {}
@@ -98,7 +98,7 @@ public:
 
 /*!
  * @class ConsensusScoreSequenceEntry
- * @headerfile <seqan/consensus.h>
+ * @headerfile <seqan/hapseq.h>
  * @brief Wrapper for a pointer to a sequence and a position in this sequence.
  *
  * @signature template <typename TSequence>

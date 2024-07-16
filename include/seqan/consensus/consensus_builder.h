@@ -111,7 +111,7 @@ private:
             TFragmentStore const & store,
             std::vector<OverlapInfo_> const & overlapInfos) const;
 
-    // Configuration to use for consensus building.
+    // Configuration to use for hapseq building.
     ConsensusAlignmentOptions options;
 };
 
@@ -360,7 +360,7 @@ template <typename TFragmentStore>
 void ConsensusBuilder_<TFragmentStore>::run(TFragmentStore & store,
                                             std::vector<OverlapInfo_> const & overlapInfos) const
 {
-    // The alignments as required by consensus MSA module.
+    // The alignments as required by hapseq MSA module.
     TFragments fragments;
     String<int> scores;
     Graph<Undirected<double> > distances;

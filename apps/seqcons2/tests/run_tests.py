@@ -88,7 +88,7 @@ def main(source_base, binary_base):
             ])
         conf_list.append(conf)
 
-    # all consensus variants (except for align) for SAM input
+    # all hapseq variants (except for align) for SAM input
     for oa_ext in ['.sam', '.txt']:
         for method in ['overlap_consensus', 'pos_consensus',
                        'contig_consensus', 'realign', 'nop']:

@@ -45,7 +45,7 @@
 #include <seqan/file.h>
 #include <seqan/sequence.h>
 #include <seqan/store.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 
 // ===========================================================================
 // Realignment Code

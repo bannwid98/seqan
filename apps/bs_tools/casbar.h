@@ -1300,7 +1300,7 @@ void doSnpAndMethCalling(
         //clear(referenceGaps);
         //referenceGaps = referenceGapsTemp;
         // for indels:
-        // i1 keeps track of consensus character
+        // i1 keeps track of hapseq character
         // i2 keeps track of coverage (last 8 bits) and indelcount (first 8 bits)
         resize(indelConsens,refStart + length(referenceGaps));
         for(unsigned i = 0; i < refStart + length(referenceGaps) ; ++i)

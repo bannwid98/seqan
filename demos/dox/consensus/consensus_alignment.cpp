@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 #include <seqan/sequence.h>
 #include <seqan/store.h>
 
@@ -41,11 +41,11 @@ int main()
     printAlignment(std::cout, layout, store, /*contigID=*/ 0,
                    /*beginPos=*/ 0, /*endPos=*/ (int)length(ref), 0, 30);
 
-    // Compute consensus alignment.
+    // Compute hapseq alignment.
     ConsensusAlignmentOptions options;
     consensusAlignment(store, options);
 
-    // Print final consensus alignment.
+    // Print final hapseq alignment.
     std::cout << "\n\nFinal Consensus Alignment\n\n";
     layoutAlignment(layout, store);
     printAlignment(std::cout, layout, store, /*contigID=*/ 0,

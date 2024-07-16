@@ -1,0 +1,15 @@
+##fileformat=VCFv4.1
+##source=mason_variator
+##reference=/home/mi/bannwid98/Development/pangenomemapperanalysis/data/Homo_sapiens.GRCh38.dna.chromosome.22.fa
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant described in this record">
+##INFO=<ID=SVLEN,Number=.,Type=Integer,Description="Difference in length between REF and ALT alleles">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=TARGETPOS,Number=1,Type=String,Description="Target position for duplications.">
+##ALT=<ID=INV,Description="INV">
+##ALT=<ID=DUP,Description="Duplication">
+##contig=<ID=22,length=50818468>
+##FORMAT=<ID=GT,Number=10,Type=String,Description="Haplotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	haplotype_0	haplotype_1	haplotype_2	haplotype_3	haplotype_4	haplotype_5	haplotype_6	haplotype_7	haplotype_8	haplotype_9
+22	10527665	sim_snp_0	A	C,G,T	.	PASS	.	GT	1	3	1	2	2	3	1	3	3	2
+22	10529404	sim_snp_1	A	C,G,T	.	PASS	.	GT	1	3	2	1	2	3	1	3	1	3
+22	10536470	sim_snp_2	T	A,C,G	.	PASS	.	GT	2	1	3	1	2	3	3	3	1	3

@@ -51,7 +51,7 @@ namespace seqan2 {
 
 /*!
  * @class ConsensusAlignmentOptions
- * @headerfile <seqan/consensus.h>
+ * @headerfile <seqan/hapseq.h>
  * @brief Configuration for @link consensusAlignment @endlink
  *
  * @signature struct ConsensusAlignmentOptions;
@@ -74,7 +74,7 @@ struct ConsensusAlignmentOptions
 
     /*!
      * @var unsigned ConsensusAlignmentOptions::contigID;
-     * @brief The id of the contig to compute the consensus for, defaults to <tt>INVALID</tt>.
+     * @brief The id of the contig to compute the hapseq for, defaults to <tt>INVALID</tt>.
      *
      * Set to <tt>INVALID</tt> for all.
      */

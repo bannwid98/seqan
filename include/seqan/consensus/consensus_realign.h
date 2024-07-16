@@ -185,7 +185,7 @@ scoreConsensus(TConsensus& consensus)
 
 // Perform one realignment round.
 // TODO(holtgrew): Rename to reflect this more clearly.
-// TODO(holtgrew): TConsensus/consensus are profiles, really.
+// TODO(holtgrew): TConsensus/hapseq are profiles, really.
 template<typename TFragSpec, typename TConfig, typename TAlignedRead, typename TSpec, typename TConsensus, typename TScore, typename TMethod, typename TBandwidth>
 void
 reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
@@ -233,8 +233,8 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
             fflush(stdout);
         }
         //// Debug code
-        //for(TSize i = 0; i<length(consensus); ++i) {
-        //    std::cout << consensus[i] << std::endl;
+        //for(TSize i = 0; i<length(hapseq); ++i) {
+        //    std::cout << hapseq[i] << std::endl;
         //}
         //TAlignedReadIter debugIt = begin(contigReads, Standard() );
         //TAlignedReadIter debugItEnd = end(contigReads, Standard() );
@@ -253,7 +253,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
         TConsIter itCons = begin(consensus, Standard());
         TConsIter itConsEnd = end(consensus, Standard());
 
-        // Initialize the consensus of the band.
+        // Initialize the hapseq of the band.
         clear(myRead);
         resize(myRead, length(fragStore.readSeqStore[alignIt->readId]), TProfileChar());
         resize(bandConsensus, 2 * bandwidth + (alignIt->endPos - alignIt->beginPos), Generous());
@@ -278,7 +278,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
         TSize itConsPosBegin = itConsPos;  // start position of read basically, right? if(itConsPosBegin != alignIt->beginPos) std::cout <<"nicht unbedingt gleich\n";
         alignIt->beginPos = alignIt->endPos = 0; // So this read is discarded in all gap operations
 
-        // Remove sequence from profile (and add to the consensus??)  // TODO(holtgrew): Add to consensus part right?
+        // Remove sequence from profile (and add to the hapseq??)  // TODO(holtgrew): Add to hapseq part right?
         typedef typename Iterator<TReadSeq, Standard>::Type TReadIter;
         TReadIter itRead = begin(fragStore.readSeqStore[alignIt->readId], Standard());
         TReadIter itReadEnd = end(fragStore.readSeqStore[alignIt->readId], Standard());
@@ -319,7 +319,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
                     removedEndPos = 0;
                 } else {
                     if (itConsPosBegin != itConsPos) {
-                        ++increaseBandLeft; // insertion --> increaseBandLeft, read has character here, consensus doesnt
+                        ++increaseBandLeft; // insertion --> increaseBandLeft, read has character here, hapseq doesnt
                         ++removedEndPos;
                     } else ++removedBeginPos; // begin gaps
                     removeGap(contigReads, itConsPos);
@@ -330,7 +330,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
                 //SEQAN_ASSERT_LT(itRead, itReadEnd);
             }
             for (; diff < newDiff && itCons != itConsEnd && bandConsIt != bandConsItEnd; ++diff) {
-                ++increaseBandRight; // deletion --> increaseBandRight, read has gaps here, consensus doesnt
+                ++increaseBandRight; // deletion --> increaseBandRight, read has gaps here, hapseq doesnt
                 //SEQAN_ASSERT_LT(itCons, itConsEnd);
                 --(*itCons).count[gapPos];
                 if (!empty(*itCons)) {
@@ -353,7 +353,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
                     removedEndPos = 0;
                 } else {  // only gaps left in this column after removing myRead
                     if (itConsPosBegin != itConsPos) {
-                        ++increaseBandLeft; // insertion --> increaseBandLeft, read is longer than consensus here
+                        ++increaseBandLeft; // insertion --> increaseBandLeft, read is longer than hapseq here
                         ++removedEndPos;
                     } else ++removedBeginPos;
                     removeGap(contigReads, itConsPos);
@@ -373,7 +373,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
         resize(bandConsensus, bandConsIt - begin(bandConsensus, Standard()), Generous());
         resize(myRead, myReadIt - begin(myRead, Standard()), Generous());
 
-        // Realign the consensus with the sequence.
+        // Realign the hapseq with the sequence.
         typedef StringSet<TConsensus, Dependent<> > TStringSet;
         TStringSet pairSet;
         appendValue(pairSet, bandConsensus);
@@ -416,7 +416,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
         //std::cout << sc1 << std::endl;
         //std::cout << g1 << std::endl;
 
-        // Add the read back to the consensus and build the new consensus.
+        // Add the read back to the hapseq and build the new hapseq.
         resize(newConsensus, length(bandConsensus) + length(myRead), Generous());
         TConsIter newConsIt = begin(newConsensus, Standard());
         TConsIter bandIt = begin(bandConsensus, Standard());
@@ -521,7 +521,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
 
 /*!
  * @fn reAlign
- * @headerfile <seqan/consensus.h>
+ * @headerfile <seqan/hapseq.h>
  * @brief Perform realignment using the Anson-Myers realignment.
  *
  * @deprecated Do not use this function but use the new function @link reAlignment @endlink instead.
@@ -535,7 +535,7 @@ reAlign(FragmentStore<TFragSpec, TConfig>& fragStore,
  * @param[in]     includeReference A <tt>bool</tt> flag that indicates whether to include the reference as a pseudo-read.
  *
  * If <tt>includeReference</tt> then the reference of the given contig will be used as a pseudo-read.  In this case, the
- * reference will be replaced by the consensus.  When included as a pseudo-read, the alignment of the consensus relative
+ * reference will be replaced by the hapseq.  When included as a pseudo-read, the alignment of the hapseq relative
  * to the original refernence can be used to call variants.
  */
 
@@ -635,7 +635,7 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
 //    std::cerr << "TIME copying " << endTime - beginTime << std::endl;
 
     // beginTime = sysTime();
-    // Create the consensus sequence
+    // Create the hapseq sequence
     TSize gapPos = ValueSize<TAlphabet>::VALUE;
     typedef ProfileChar<TAlphabet> TProfile;
     typedef String<TProfile> TProfileString;
@@ -691,7 +691,7 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
         }
     }
     // endTime = sysTime();
-//    std::cerr << "TIME consensus " << endTime - beginTime << std::endl;
+//    std::cerr << "TIME hapseq " << endTime - beginTime << std::endl;
 
     // beginTime = sysTime();
     double tBefore = 0, tAlign = 0, tAfter = 0;
@@ -715,7 +715,7 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
     //std::cout << "FinalScore: " << score << std::endl;
 
     // beginTime = sysTime();
-    // Update all the aligned reads and the new consensus
+    // Update all the aligned reads and the new hapseq
     alignIt = lowerBoundAlignedReads(fragStore.alignedReadStore, contigId, SortContigId());
     TAlignIter contigReadIt = begin(contigReads, Standard());
     for (; alignIt != alignItEnd; ++alignIt) {

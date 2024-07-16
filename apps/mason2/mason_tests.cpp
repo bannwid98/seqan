@@ -173,7 +173,7 @@ SEQAN_DEFINE_TEST(mason_tests_position_map_inversion)
 
     PositionMap positionMap;
 
-    // Inversion: --1000-->|<--1000--|--1000-->
+    // INV: --1000-->|<--1000--|--1000-->
     GenomicInterval gi1(   0, 1000,    0, 1000, '+', GenomicInterval::NORMAL);
     GenomicInterval gi2(1000, 2000, 1000, 2000, '-', GenomicInterval::INVERTED);
     GenomicInterval gi3(2000, 3000, 2000, 3000, '+', GenomicInterval::NORMAL);

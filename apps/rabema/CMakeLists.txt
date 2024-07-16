@@ -46,7 +46,7 @@ add_definitions (-DSEQAN_DATE="${SEQAN_DATE}")
 add_executable (rabema_prepare_sam prepare_sam.cpp sorting.h)
 target_link_libraries (rabema_prepare_sam ${SEQAN_LIBRARIES})
 
-# Building of GSI file from "perfect" SAM file and reference sequence.
+# Building of GSI file from "perfect" SAM file and reference sedquence.
 add_executable (rabema_build_gold_standard
                rabema_build_gold_standard.cpp
                curve_smoothing.h

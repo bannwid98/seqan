@@ -20,7 +20,7 @@ echo "${SEQCONS} -m align_consensus -i seqs1.fa -oa seqs1.align_consensus.sam -o
 ${SEQCONS} -m align_consensus -i seqs1.fa -oa seqs1.align_consensus.sam -oc seqs1.align_consensus.fa >seqs1.align_consensus.stdout 2>seqs1.align_consensus.stderr
 echo "=> $?"
 
-# All consensus variants for alignments.
+# All hapseq variants for alignments.
 
 echo "${SEQCONS} -m nop -i alns1.sam -oa alns1.nop.sam -oc alns1.nop.fa >alns1.nop.sam.stdout 2>alns1.nop.sam.stderr"
 ${SEQCONS} -m nop -i alns1.sam -oa alns1.nop.sam -oc alns1.nop.fa >alns1.nop.sam.stdout 2>alns1.nop.sam.stderr
@@ -54,7 +54,7 @@ echo "${SEQCONS} -m pos_consensus -i alns1.sam -oa alns1.pos_consensus.txt >alns
 ${SEQCONS} -m pos_consensus -i alns1.sam -oa alns1.pos_consensus.txt >alns1.pos_consensus.txt.stdout 2>alns1.pos_consensus.txt.stderr
 echo "=> $?"
 
-# Alignment + consensus for similar sequences.
+# Alignment + hapseq for similar sequences.
 
 echo "${SEQCONS} -m align_consensus -i seqs2.fa -oa seqs2.align_consensus.sam -oc seqs2.align_consensus.fa >seqs2.align_consensus.sam.stdout 2>seqs2.align_consensus.sam.stderr"
 ${SEQCONS} -m align_consensus -i seqs2.fa -oa seqs2.align_consensus.sam -oc seqs2.align_consensus.fa >seqs2.align_consensus.sam.stdout 2>seqs2.align_consensus.sam.stderr

@@ -3112,13 +3112,13 @@ realignReferenceToReadProfile(TFragmentStore & fragmentStore,
                 limit -= (diff - newDiff);
                 clippedEnd = true;
             }
-            // add non-gap positions to consensus
+            // add non-gap positions to hapseq
             for(;old < limit && itRead != itReadEnd && it != itEnd; ++old, ++itRead)
             {
                 SEQAN_ASSERT_LT(itRead, itReadEnd);
                 ++(value(it++)).count[ordValue(*itRead)];
             }
-            // add gap positions to consensus
+            // add gap positions to hapseq
             for(;diff < newDiff; ++diff)
                 ++(value(it++)).count[gapChar];
         }
@@ -3193,7 +3193,7 @@ realignReferenceToReadProfile(TFragmentStore & fragmentStore,
     //std::cout << g2 << std::endl;
 
 
-    // make diploid consensus --> realign ref with that
+    // make diploid hapseq --> realign ref with that
     it = begin(multiReadProfile, Standard() );
     itEnd = end(multiReadProfile, Standard());
 
@@ -3390,13 +3390,13 @@ realignReferenceToDiploidConsensusProfile(TFragmentStore & fragmentStore,
                 limit -= (diff - newDiff);
                 clippedEnd = true;
             }
-            // add non-gap positions to consensus
+            // add non-gap positions to hapseq
             for(;old < limit && itRead != itReadEnd && it != itEnd; ++old, ++itRead)
             {
                 SEQAN_ASSERT_LT(itRead, itReadEnd);
                 ++(value(it++)).count[ordValue(*itRead)];
             }
-            // add gap positions to consensus
+            // add gap positions to hapseq
             for(;diff < newDiff; ++diff)
                 ++(value(it++)).count[gapChar];
         }
@@ -3425,7 +3425,7 @@ realignReferenceToDiploidConsensusProfile(TFragmentStore & fragmentStore,
     // --> check for adjacent fragments where fragmentEnd == nextFragmentBegin
 
 
-    // make diploid consensus profile
+    // make diploid hapseq profile
     TProfileString diploidConsensus;
     resize(diploidConsensus,length(multiReadProfile),TProfile());
     TProfIter dipIt = begin(diploidConsensus, Standard() );
@@ -4033,7 +4033,7 @@ convertMatchesToGlobalAlignment(fragmentStore, scoreType, Nothing());
 
 
     // for indels:
-    // i1 keeps track of consensus character
+    // i1 keeps track of hapseq character
     // i2 keeps track of coverage (last 8 bits) and indelcount (first 8 bits)
     String<Pair<short unsigned,short unsigned> > indelConsens;
     resize(indelConsens,refStart + length(referenceGaps));
@@ -4415,7 +4415,7 @@ convertMatchesToGlobalAlignment(fragmentStore, scoreType, Nothing());
 #endif
             while(candidateViewPos < refStart + (TContigPos)length(referenceGaps) && // shouldnt happen actually
                 ((indelConsens[candidateViewPos].i1 & 7) == 5  ||        // deletion in consens
-                ((indelConsens[candidateViewPos].i1 & 7) == 6  && isGap(referenceGaps, candidateViewPos-refStart)))  // position in consensus is the same as in reference
+                ((indelConsens[candidateViewPos].i1 & 7) == 6  && isGap(referenceGaps, candidateViewPos-refStart)))  // position in hapseq is the same as in reference
                 )                                                   // and reference is a gap (same candidatePosition as before)
             {
 #ifdef SNPSTORE_DEBUG
@@ -4475,8 +4475,8 @@ convertMatchesToGlobalAlignment(fragmentStore, scoreType, Nothing());
             }
             clear(insertionSeq);
             while(candidateViewPos < refStart + (TContigPos)length(referenceGaps) && // shouldnt happen actually
-                ((indelConsens[candidateViewPos].i1 & 7) < 5 ||          // insertion in consensus
-                ((indelConsens[candidateViewPos].i1 & 7) == 6  && candidatePos == positionGapToSeq(referenceGaps, candidateViewPos-refStart)))   // position in consensus is the same as in reference
+                ((indelConsens[candidateViewPos].i1 & 7) < 5 ||          // insertion in hapseq
+                ((indelConsens[candidateViewPos].i1 & 7) == 6  && candidatePos == positionGapToSeq(referenceGaps, candidateViewPos-refStart)))   // position in hapseq is the same as in reference
                 )                                                   // and reference is a gap (same candidatePosition as before)
             {
 #ifdef SNPSTORE_DEBUG

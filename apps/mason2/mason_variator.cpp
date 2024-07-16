@@ -849,7 +849,7 @@ public:
         appendValue(vcfHeader, seqan2::VcfHeaderRecord(
                 "INFO", "<ID=TARGETPOS,Number=1,Type=String,Description=\"Target position for duplications.\">"));
         appendValue(vcfHeader, seqan2::VcfHeaderRecord(
-                "ALT", "<ID=INV,Description=\"Inversion\">"));
+                "ALT", "<ID=INV,Description=\"INV\">"));
         appendValue(vcfHeader, seqan2::VcfHeaderRecord(
                 "ALT", "<ID=DUP,Description=\"Duplication\">"));
         // We don't need DEL and INS here since we report exact one with the sequence.

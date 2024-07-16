@@ -43,7 +43,7 @@
 
 #include <seqan/align.h>
 #include <seqan/basic.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 #include <seqan/file.h>
 #include <seqan/sequence.h>
 

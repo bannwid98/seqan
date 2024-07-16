@@ -49,7 +49,7 @@ Stockholm FORMAT:
 => header with format version
 => tags specify semantic of line
         #=GR SS         means secondary structure
-        #=GC SS_cons    means secondary structure of consensus
+        #=GC SS_cons    means secondary structure of hapseq
 => allowed symbols for RNA  .,;         unpaired
                             <>(){}[]    paired
                             AaBb...     pseudoknot

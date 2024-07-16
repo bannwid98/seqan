@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <seqan/store.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 
 using namespace seqan2;
 

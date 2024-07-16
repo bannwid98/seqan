@@ -479,7 +479,7 @@ inline void _fillVcfRecordInversion(VcfRecord & record, TBreakpoint & bp, TSeque
     std::stringstream ss;
     ss << "SVTYPE=INV";
     ss << ";END=" << bp.endSeqPos + 1 - 1; // 1-base adjustment, -1 bc endPos is behind last variant position
-    SEQAN_ASSERT_GEQ_MSG(bp.endSeqPos, bp.startSeqPos, "Inversion end position smaller than begin position!");
+    SEQAN_ASSERT_GEQ_MSG(bp.endSeqPos, bp.startSeqPos, "INV end position smaller than begin position!");
     ss << ";SVLEN=" << bp.endSeqPos-bp.startSeqPos;
     //if (bp.similar != std::numeric_limits<unsigned>::max())
         ss << ";BM=" << bp.similar;
@@ -999,7 +999,7 @@ void _fillVcfHeader(seqan2::VcfHeader & vcfHeader,
     appendValue(vcfHeader, VcfHeaderRecord(
             "INFO", "<ID=DP,Number=1,Type=Integer,Description=\"Number of Supporting Reads/Read Depth for Variant\">"));
     appendValue(vcfHeader, seqan2::VcfHeaderRecord(
-            "ALT", "<ID=INV,Description=\"Inversion\">"));
+            "ALT", "<ID=INV,Description=\"INV\">"));
     appendValue(vcfHeader, seqan2::VcfHeaderRecord(
                 "ALT", "<ID=DUP,Description=\"Duplication\">"));
     appendValue(vcfHeader, seqan2::VcfHeaderRecord(

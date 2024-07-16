@@ -692,7 +692,7 @@ void AnsonMyersRealigner_<TFragmentStore>::run(unsigned contigID, unsigned windo
 
     _checkReadAlignments();
 
-    // Write back the realigned read alignments into store and set contig to the consensus in case that the original
+    // Write back the realigned read alignments into store and set contig to the hapseq in case that the original
     // reference was included as a pseudo-read.
     _endContig(contigID);
 
@@ -878,7 +878,7 @@ void AnsonMyersRealigner_<TFragmentStore>::_endContig(unsigned contigID)
     // Update Contig
     // -----------------------------------------------------------------------
 
-    // The contig will be replaced by the consensus sequence.
+    // The contig will be replaced by the hapseq sequence.
 
     typedef typename TFragmentStore::TContigStore   TContigStore;
     typedef typename Value<TContigStore>::Type      TContig;
@@ -1758,7 +1758,7 @@ void AnsonMyersRealignmentRound_<TFragmentStore>::_updateAlignments(
  * then updated with the resulting pairwise alignment.  This is iterated until the global alignment score does not
  * improve.
  *
- * In the end, the reference sequence of the given contig is replaced by the consensus of the multi-read alignment.
+ * In the end, the reference sequence of the given contig is replaced by the hapseq of the multi-read alignment.
  *
  * @section Including the Reference
  *

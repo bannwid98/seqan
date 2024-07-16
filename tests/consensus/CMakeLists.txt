@@ -1,9 +1,9 @@
 # ===========================================================================
 #                  SeqAn - The Library for Sequence Analysis
 # ===========================================================================
-# File: /tests/consensus/CMakeLists.txt
+# File: /tests/hapseq/CMakeLists.txt
 #
-# CMakeLists.txt file for the consensus module tests.
+# CMakeLists.txt file for the hapseq module tests.
 # ===========================================================================
 
 cmake_minimum_required (VERSION 3.12)

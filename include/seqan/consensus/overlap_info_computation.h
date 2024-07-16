@@ -148,9 +148,9 @@ private:
             lDiag = (int)length(seqH) - (int)length(seqV);
     }
 
-    // The FragmentStore to use for consensus computation.
+    // The FragmentStore to use for hapseq computation.
     TFragmentStore const & store;
-    // The configuration of the consensus alignment.
+    // The configuration of the hapseq alignment.
     ConsensusAlignmentOptions const & options;
 };
 

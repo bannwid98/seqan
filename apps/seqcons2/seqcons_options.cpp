@@ -65,10 +65,10 @@ char const * operationStr(SeqConsOptions::Operation op)
     static char const * labels[] = {
         "convert only",
         "realign only",
-        "consensus with positions",
-        "contig-wise MSA + consensus",
-        "overlap MSA + consensus",
-        "global MSA + consensus"
+        "hapseq with positions",
+        "contig-wise MSA + hapseq",
+        "overlap MSA + hapseq",
+        "global MSA + hapseq"
     };
     return labels[op];
 }
@@ -98,7 +98,7 @@ char const * verbosityStr(int verbosity)
 void SeqConsOptions::checkConsistency()
 {
     // Position information is only available when input is in SAM format and is required for
-    // position-/contig-based consensus and realignment.
+    // position-/contig-based hapseq and realignment.
     seqan2::CharString inFileLowerCase = inputFile;
     seqan2::toLower(inFileLowerCase);
     if ((operation == POS_CONSENSUS || operation == CTG_CONSENSUS || operation == REALIGN) &&
@@ -138,7 +138,7 @@ parseCommandLine(SeqConsOptions & options, int argc, char const ** argv)
     // Setup ArgumentParser.
     seqan2::ArgumentParser parser("seqcons2");
     // Set short description, version, and date.
-    setShortDescription(parser, "Compute consensus from sequences.");
+    setShortDescription(parser, "Compute hapseq from sequences.");
     setVersion(parser, SEQAN_APP_VERSION " [" SEQAN_REVISION "]");
     setDate(parser, SEQAN_DATE);
 
@@ -147,7 +147,7 @@ parseCommandLine(SeqConsOptions & options, int argc, char const ** argv)
                  "\\fB-i\\fP \\fIINPUT.{fa,sam}\\fP [\\fB-oa\\fP \\fIOUT_ALIGN.{fa,sam}\\fP] "
                  "[\\fB-oc\\fP \\fIOUT_CONSENSUS.fa\\fP]");
     addDescription(parser,
-                   "Compute consensus from sequences with and without approximate alignment information.");
+                   "Compute hapseq from sequences with and without approximate alignment information.");
 
     // Overall Program Options
     addOption(parser, seqan2::ArgParseOption("q", "quiet", "Set verbosity to a minimum."));
@@ -172,10 +172,10 @@ parseCommandLine(SeqConsOptions & options, int argc, char const ** argv)
     setRequired(parser, "output-alignment-file", false);
     setValidValues(parser, "output-alignment-file", "sam txt");
 
-    addOption(parser, seqan2::ArgParseOption("oc", "output-consensus-file", "Output file with consensus sequence.",
+    addOption(parser, seqan2::ArgParseOption("oc", "output-hapseq-file", "Output file with hapseq sequence.",
                                             seqan2::ArgParseOption::OUTPUT_FILE, "OUT_CONSENSUS"));
-    setRequired(parser, "output-consensus-file", false);
-    setValidValues(parser, "output-consensus-file", "fa fasta");
+    setRequired(parser, "output-hapseq-file", false);
+    setValidValues(parser, "output-hapseq-file", "fa fasta");
 
     // Alignment Quality Filter Options
     addSection(parser, "Alignment Quality Filter Options");
@@ -234,29 +234,29 @@ parseCommandLine(SeqConsOptions & options, int argc, char const ** argv)
                 "Perform no action, just perform file conversion if possible.");
     addListItem(parser, "\\fBrealign\\fP",
                 "Perform realignment, requires input to be a SAM file to provide approximate position "
-                "information, creates consensus sequence after realignment.");
+                "information, creates hapseq sequence after realignment.");
     addListItem(parser, "\\fBoverlap_consensus\\fP",
                 "Perform MSA with overlap alignments of the input ignoring any given coordinates, then realign. "
-                "This is most suited when computing the consensus of reads where the underlying sequence is very "
+                "This is most suited when computing the hapseq of reads where the underlying sequence is very "
                 "similar and most differences stem from sequencing errors and not genomic variation. All "
                 "pairwise alignments computed here are banded.");
     addListItem(parser, "\\fBalign_consensus\\fP",
                 "Perform MSA with global alignments of the input ignoring any given coordinates, then realign. "
                 "This will computed unbanded global ends-gap free pairwise alignments.  This is also suitable "
                 "when aligning different sequences, e.g. clustered transcripts.  Using this method, seqcons "
-                "will be similar to calling seqan2::T-Coffee, followed by realignment and consensus computation.");
+                "will be similar to calling seqan2::T-Coffee, followed by realignment and hapseq computation.");
     addListItem(parser, "\\fBcontig_consensus\\fP",
                 "Perform MSA of the input, contig by contig, requires contig information, then realign. Input "
                 "must be SAM.");
     addListItem(parser, "\\fBpos_consensus\\fP",
-                "Perform consensus of the input, then realign. Requires approximate coordinate information in "
+                "Perform hapseq of the input, then realign. Requires approximate coordinate information in "
                 "SAM file.");
 
     // Add Output Section
     addTextSection(parser, "Output Formats");
     addText(parser,
-            "The program can write out the consensus sequence in FASTA format and optionally the alignment of the "
-            "input sequences against the consensus in SAM/BAM format.  When using the extension \\fI.txt\\fP, seqcons "
+            "The program can write out the hapseq sequence in FASTA format and optionally the alignment of the "
+            "input sequences against the hapseq in SAM/BAM format.  When using the extension \\fI.txt\\fP, seqcons "
             "will write out the MSA as a plain text visualization.");
 
     // Add Examples Section
@@ -264,7 +264,7 @@ parseCommandLine(SeqConsOptions & options, int argc, char const ** argv)
     addListItem(parser,
                 "\\fBseqcons\\fP \\fB-m\\fP \\fIovl_consensus\\fP \\fB-i\\fP \\fIreads.fa\\fP \\fB-oa\\fP "
                 "\\fIout.sam\\fP \\fB-oc\\fP \\fIcons.fa\\fP",
-                "Compute MSA of the sequences in \\fIreads.fa\\fP.  The consensus sequence is written to "
+                "Compute MSA of the sequences in \\fIreads.fa\\fP.  The hapseq sequence is written to "
                 "\\fIcons.fa\\fP and the alignment of the sequences in \\fIreads.fa\\fP is written to "
                 "\\fIout.sam\\fP.");
     addListItem(parser,
@@ -294,7 +294,7 @@ parseCommandLine(SeqConsOptions & options, int argc, char const ** argv)
 
     getOptionValue(options.inputFile, parser, "input-file");
     getOptionValue(options.outputFileAlignment, parser, "output-alignment-file");
-    getOptionValue(options.outputFileConsensus, parser, "output-consensus-file");
+    getOptionValue(options.outputFileConsensus, parser, "output-hapseq-file");
 
     getOptionValue(options.overlapMinLength, parser, "overlap-min-length");
     getOptionValue(options.overlapMaxErrorRate, parser, "overlap-max-error");

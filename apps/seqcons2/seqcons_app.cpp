@@ -91,12 +91,12 @@ private:
     // Load alignments from SAM file, will set reference to string of N of sufficient length.
     void loadAlignments(char const * fileName);
 
-    // Perform the consensus alignment, optionally interpreting coordinates.
+    // Perform the hapseq alignment, optionally interpreting coordinates.
     void performConsensusAlignment(bool useContigID, bool usePositions, bool useGlobalAlignment);
     // Perform realignment on store only.
     void performRealignment();
 
-    // Write out consensus sequence to file.
+    // Write out hapseq sequence to file.
     void writeConsensus();
     // Write out alignments to file.
     void writeAlignments();
@@ -111,10 +111,10 @@ private:
 void SeqConsAppImpl::writeConsensus()
 {
     if (options.verbosity >= 1)
-        std::cerr << "Writing consensus to " << options.outputFileConsensus << " ...";
+        std::cerr << "Writing hapseq to " << options.outputFileConsensus << " ...";
     seqan2::SeqFileOut seqFileOut;
     if (!open(seqFileOut, options.outputFileConsensus.c_str()))
-        throw std::runtime_error("Could not open consensus output file for writing.");
+        throw std::runtime_error("Could not open hapseq output file for writing.");
     for (unsigned contigID = 0; contigID < length(store.contigStore); ++contigID)
     {
         std::stringstream ss;
@@ -170,7 +170,7 @@ void SeqConsAppImpl::run()
     if (options.verbosity >= 1)
         std::cerr << "\n__COMPUTATION________________________________________________________________\n"
                   << '\n';
-    // Perform the consensus or realignment computation.
+    // Perform the hapseq or realignment computation.
     switch (options.operation)
     {
         case SeqConsOptions::ALN_CONSENSUS:
@@ -199,7 +199,7 @@ void SeqConsAppImpl::run()
             break;
     }
 
-    // Write the consensus and/or the alignments.
+    // Write the hapseq and/or the alignments.
     if (options.verbosity >= 1)
         std::cerr << "\n__WRITING RESULT_____________________________________________________________\n"
                   << '\n';
@@ -270,7 +270,7 @@ void SeqConsAppImpl::loadAlignments(char const * fileName)
 
 void SeqConsAppImpl::performConsensusAlignment(bool useContigID, bool usePositions, bool useGlobalAlignment)
 {
-    // Setup the consensus alignment options.
+    // Setup the hapseq alignment options.
     seqan2::ConsensusAlignmentOptions caOptions;
     caOptions.useContigID = useContigID;
     caOptions.usePositions = usePositions;
@@ -287,17 +287,17 @@ void SeqConsAppImpl::performConsensusAlignment(bool useContigID, bool usePositio
     caOptions.kMerSize = options.kMerSize;
     caOptions.kMerMaxOcc = options.kMerMaxOcc;
 
-    // Perform the consensus alignment.
+    // Perform the hapseq alignment.
     double startTime = seqan2::sysTime();
     if (options.verbosity >= 1)
-        std::cerr << "Performing consensus computation...";
+        std::cerr << "Performing hapseq computation...";
     if (options.verbosity >= 3)
         std::cerr << "\n";
     consensusAlignment(store, caOptions);
     if (options.verbosity >= 1)
         std::cerr << " OK\n";
     if (options.verbosity >= 2)
-        std::cerr << "\t=> consensus step took " << seqan2::sysTime() - startTime << "s\n";
+        std::cerr << "\t=> hapseq step took " << seqan2::sysTime() - startTime << "s\n";
 
     // Finally, compute realignment of the resulting multi-read alignment.
     performRealignment();

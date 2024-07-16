@@ -247,7 +247,7 @@ void doRealigning(
 
     if(options._debugLevel > 1)::std::cout << "Realigning reads including reference..." << std::flush;
 
-    // Would diploid consensus profile would be not that clear in bs case, hence we do not do that for the beginning!
+    // Would diploid hapseq profile would be not that clear in bs case, hence we do not do that for the beginning!
     //unsigned refId = length(matchQualities); // reference id (there may be more matchQs than matches due to pile up correction)
     //realignReferenceToDiploidConsensusProfile(fragmentStore,refId,options);
 

@@ -11,7 +11,7 @@
 ##INFO=<ID=TARGETPOS,Number=1,Type=String,Description="Target position for duplications (position before inserted sequence).">
 ##INFO=<ID=BM,Number=1,Type=Integer,Description="Breakpoint Mate: similar breakpoints have same ID">
 ##INFO=<ID=DP,Number=1,Type=Integer,Description="Number of Supporting Reads/Read Depth for Variant">
-##ALT=<ID=INV,Description="Inversion">
+##ALT=<ID=INV,Description="INV">
 ##ALT=<ID=DUP,Description="Duplication">
 ##ALT=<ID=DUP:TANDEM,Description="Tandem Duplication">
 ##contig=<ID=gi|9632547|ref|NC_002077.1|,length=4718>

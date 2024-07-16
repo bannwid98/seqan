@@ -31,14 +31,14 @@
 // ==========================================================================
 // Author: Manuel Holtgrewe <manuel.holtgrewe@fu-berlin.de>
 // ==========================================================================
-// Tests for the consensus module extensions.
+// Tests for the hapseq module extensions.
 // ==========================================================================
 
 #include <sstream>
 
 #include <seqan/basic.h>
 #include <seqan/file.h>
-#include <seqan/consensus.h>
+#include <seqan/hapSeq.h>
 
 // A test for consensusAlignment() with full coordinates.
 
@@ -73,7 +73,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_coordinates)
     // Compute Consensus Alignment
     // -----------------------------------------------------------------------
 
-    // Compute consensus alignment.
+    // Compute hapseq alignment.
     seqan2::ConsensusAlignmentOptions options;
     consensusAlignment(store, options);
 
@@ -83,7 +83,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_coordinates)
 
     SEQAN_ASSERT_EQ(length(store.contigStore), 1u);
 
-    // Print final consensus alignment into buffer.
+    // Print final hapseq alignment into buffer.
     seqan2::AlignedReadLayout layout;
     layoutAlignment(layout, store);
     std::stringstream ss;
@@ -140,7 +140,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_contig_ids)
     // Compute Consensus Alignment
     // -----------------------------------------------------------------------
 
-    // Compute consensus alignment.
+    // Compute hapseq alignment.
     seqan2::ConsensusAlignmentOptions options;
     options.usePositions = false;
     consensusAlignment(store, options);
@@ -214,7 +214,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_no_contig_ids)
     // Compute Consensus Alignment
     // -----------------------------------------------------------------------
 
-    // Compute consensus alignment.
+    // Compute hapseq alignment.
     seqan2::ConsensusAlignmentOptions options;
     options.useContigID = false;
     consensusAlignment(store, options);
@@ -225,7 +225,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_no_contig_ids)
 
     SEQAN_ASSERT_EQ(length(store.contigStore), 1u);
 
-    // Print final consensus alignment into buffer.
+    // Print final hapseq alignment into buffer.
     seqan2::AlignedReadLayout layout;
     layoutAlignment(layout, store);
     std::stringstream ss;
@@ -268,7 +268,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_global_alignment)
     // Compute Consensus Alignment
     // -----------------------------------------------------------------------
 
-    // Compute consensus alignment.
+    // Compute hapseq alignment.
     seqan2::ConsensusAlignmentOptions options;
     options.useGlobalAlignment = true;
     consensusAlignment(store, options);
@@ -279,7 +279,7 @@ SEQAN_DEFINE_TEST(test_consensus_consensus_alignment_global_alignment)
 
     SEQAN_ASSERT_EQ(length(store.contigStore), 1u);
 
-    // Print final consensus alignment into buffer.
+    // Print final hapseq alignment into buffer.
     seqan2::AlignedReadLayout layout;
     layoutAlignment(layout, store);
     std::stringstream ss;

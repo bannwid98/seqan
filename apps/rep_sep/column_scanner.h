@@ -72,14 +72,14 @@ bool isCandidate(FragmentStore<TSpec, TConfig> const& fragStore,
 
 
 #ifdef REPSEP_DEBUG_COLUMN_SCANNER
-    cout << "--- called SimpleScanner on candidate column with consensus [" << _sequenceCharacter(consensus) << "] --- " << endl;
+    cout << "--- called SimpleScanner on candidate column with hapseq [" << _sequenceCharacter(hapseq) << "] --- " << endl;
     for(TSize i = 0 ; i < length(candidate) ; ++i) {
         cout << _sequenceCharacter(candidate[i]) << " ";
     }
     cout << endl;
 #endif
 
-    // cout deviations from consensus
+    // cout deviations from hapseq
     std::map< TConsensusAlphabet, TSize > vote_map;
     TSize simple_deviations = 0;
     for(TSize i = 0 ; i < length(candidate) ; ++i) {

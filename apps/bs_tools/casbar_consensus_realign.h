@@ -132,7 +132,7 @@ insertGap(String<TAlignedReads, TSpec>& alignedReadStoreTmp,
 
 // Perform one realignment round.
 // TODO(holtgrew): Rename to reflect this more clearly.
-// TODO(holtgrew): TConsensus/consensus are profiles, really.
+// TODO(holtgrew): TConsensus/hapseq are profiles, really.
 template<typename TFragSpec, typename TConfig, typename TAlignedRead, typename TSpec, typename TConsensus, typename TBandwidth, typename TOptions, typename TModel>
 void
 reAlign(double &profileScore,
@@ -192,7 +192,7 @@ reAlign(double &profileScore,
 		TConsIter itCons = begin(consensus, Standard());
 		TConsIter itConsEnd = end(consensus, Standard());
 
-		// Initialize the consensus of the band. -> part of the whole profile where current read mapped
+		// Initialize the hapseq of the band. -> part of the whole profile where current read mapped
 		clear(myRead);
 		resize(myRead, length(fragStore.readSeqStore[alignIt->readId]), TProfileChar());
 		resize(bandConsensus, 2 * bandwidth + (alignIt->endPos - alignIt->beginPos), Generous());
@@ -217,7 +217,7 @@ reAlign(double &profileScore,
 		TSize itConsPosBegin = itConsPos;  // start position of read basically, right? if(itConsPosBegin != alignIt->beginPos) std::cout <<"nicht unbedingt gleich\n";
 		alignIt->beginPos = alignIt->endPos = 0; // So this read is discarded in all gap operations
 
-		// Remove sequence from profile (and add to the consensus??)  // TODO(holtgrew): Add to consensus part right?
+		// Remove sequence from profile (and add to the hapseq??)  // TODO(holtgrew): Add to hapseq part right?
 		typedef typename Iterator<TReadSeq, Standard>::Type TReadIter;
 		TReadIter itRead = begin(fragStore.readSeqStore[alignIt->readId], Standard());
 		TReadIter itReadEnd = end(fragStore.readSeqStore[alignIt->readId], Standard());
@@ -270,7 +270,7 @@ reAlign(double &profileScore,
 				{
 					if (itConsPosBegin != itConsPos)
 					{
-                        ++increaseBandLeft; // insertion --> increaseBandLeft, read has character here, consensus doesnt
+                        ++increaseBandLeft; // insertion --> increaseBandLeft, read has character here, hapseq doesnt
 						++removedEndPos;
 					}
 					else ++removedBeginPos; // begin gaps
@@ -282,7 +282,7 @@ reAlign(double &profileScore,
 				++itCons;
 			}
 			for (; diff < newDiff && itCons != itConsEnd && bandConsIt != bandConsItEnd; ++diff) {
-                ++increaseBandRight; // deletion --> increaseBandRight, read has gaps here, consensus doesnt
+                ++increaseBandRight; // deletion --> increaseBandRight, read has gaps here, hapseq doesnt
 				if (isRef) (*itCons).count[8] = -2;
                 else
                 {
@@ -325,7 +325,7 @@ reAlign(double &profileScore,
 				{  // only gaps left in this column after removing myRead
 					if (itConsPosBegin != itConsPos)
 					{
-                        ++increaseBandLeft; // insertion --> increaseBandLeft, read is longer than consensus here
+                        ++increaseBandLeft; // insertion --> increaseBandLeft, read is longer than hapseq here
                         ++removedEndPos;
 					}
 					else ++removedBeginPos;
@@ -347,7 +347,7 @@ reAlign(double &profileScore,
 		resize(bandConsensus, bandConsIt - begin(bandConsensus, Standard()), Generous());
 		resize(myRead, myReadIt - begin(myRead, Standard()), Generous());
 
-		// Realign the consensus with the sequence.
+		// Realign the hapseq with the sequence.
 		typedef StringSet<TConsensus, Dependent<> > TStringSet;
 		TStringSet pairSet;
 		appendValue(pairSet, bandConsensus);
@@ -414,7 +414,7 @@ reAlign(double &profileScore,
    		}
         double tEndAlign = sysTime();
 
-		// Add the read back to the consensus and build the new consensus.
+		// Add the read back to the hapseq and build the new hapseq.
 		resize(newConsensus, length(bandConsensus) + length(myRead), Generous());
 		TConsIter newConsIt = begin(newConsensus, Standard());
 		TConsIter bandIt = begin(bandConsensus, Standard());
@@ -669,7 +669,7 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
 		appendValue(contigReads, el, Generous());
 	}
 
-	// Create the consensus sequence
+	// Create the hapseq sequence
 	typedef ProfileChar<DnaMR, double>                              TProfileChar;   // A, C, G, T, C (G from reverse strand), T (A from reverse strand), N, R (ref. ord value)
     typedef typename ValueSize<TProfileChar>::Type                  TSizeP;
 	typedef String<TProfileChar>                                    TProfileString;
@@ -698,7 +698,7 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
 		contigReadsIt->beginPos -= minPos;  // Me: adjust read positions to min observed postion
 		contigReadsIt->endPos -= minPos;
 		itCons = begin(consensus, Standard() );
-		itCons += contigReadsIt->beginPos;  // Me: jump to first position of curr. read in consensus/profile
+		itCons += contigReadsIt->beginPos;  // Me: jump to first position of curr. read in hapseq/profile
 
 		typedef typename Iterator<TReadSeq, Standard>::Type TReadIter;
 		TReadIter itRead = begin(fragStore.readSeqStore[contigReadsIt->readId], Standard() );
@@ -776,17 +776,17 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
         std::cout << "Pos: " << i << "   ";
         for (unsigned j = 0; j < 4; ++j)
         {
-            std::cout << consensus[i].count[j] << " ";
+            std::cout << hapseq[i].count[j] << " ";
         }
         std::cout << "   ";
         for (unsigned j = 4; j < 8; ++j)
         {
-            std::cout << consensus[i].count[j] << " ";
+            std::cout << hapseq[i].count[j] << " ";
         }
         std::cout << "   ";
         for (unsigned j = 8; j < 12; ++j)
         {
-            std::cout << consensus[i].count[j] << " ";
+            std::cout << hapseq[i].count[j] << " ";
         }
         std::cout << std::endl;
     }
@@ -811,7 +811,7 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
         }
 	}
 
-	// Update all the aligned reads and the new consensus
+	// Update all the aligned reads and the new hapseq
 	alignIt = begin(fragStore.alignedReadStore);
 	TAlignIter contigReadIt = begin(contigReads, Standard());
 	for (; alignIt != alignItEnd; ++alignIt) {
@@ -860,17 +860,17 @@ reAlign(FragmentStore<TSpec, TConfig> & fragStore,
         std::cout << "pos: " << i << "   ";
         for (unsigned j = 0; j < 4; ++j)
         {
-            std::cout << consensus[i].count[j] << " ";
+            std::cout << hapseq[i].count[j] << " ";
         }
         std::cout << "   ";
         for (unsigned j = 4; j < 8; ++j)
         {
-            std::cout << consensus[i].count[j] << " ";
+            std::cout << hapseq[i].count[j] << " ";
         }
         std::cout << "   ";
         for (unsigned j = 8; j < 12; ++j)
         {
-            std::cout << consensus[i].count[j] << " ";
+            std::cout << hapseq[i].count[j] << " ";
         }
         std::cout << std::endl;
     }

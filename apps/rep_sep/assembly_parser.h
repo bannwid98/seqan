@@ -165,7 +165,7 @@ parseContig(FragmentStore<TSpec, TConfig> const& fragStore,
         // since also a gap can be off interest we also inspect those
         TCandidateColumn column;
 
-        // inspect consensus
+        // inspect hapseq
         TAlignedReadSetIter iter_cr = current_read_set.begin();
         TAlignedReadSetIter iter_cr_end = current_read_set.end();
 

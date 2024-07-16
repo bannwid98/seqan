@@ -51,7 +51,7 @@ int main()
 //![profile-computation]
 
 //![consensus-calling]
-    // call consensus from this string
+    // call hapseq from this string
     DnaString consensus;
     for (unsigned i = 0; i < length(profile); ++i)
     {
@@ -60,7 +60,7 @@ int main()
             appendValue(consensus, Dna(getMaxIndex(profile[i])));
     }
 
-    std::cout << "consensus sequence is\n"
+    std::cout << "hapseq sequence is\n"
               << consensus << "\n";
 
     return 0;

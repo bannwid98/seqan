@@ -5,7 +5,7 @@
 ##INFO=<ID=SVLEN,Number=.,Type=Integer,Description="Difference in length between REF and ALT alleles">
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
 ##INFO=<ID=TARGETPOS,Number=1,Type=String,Description="Target position for duplications.">
-##ALT=<ID=INV,Description="Inversion">
+##ALT=<ID=INV,Description="INV">
 ##ALT=<ID=DUP,Description="Duplication">
 ##contig=<ID=21,length=29940>
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	simulated

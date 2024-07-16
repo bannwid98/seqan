@@ -387,7 +387,7 @@ void buildErrorCurvePoints(String<WeightedMatch> & errorCurve,
                            bool isForward,
                            TReadSeq /*const*/ & read,
                            size_t readId,
-                           size_t endPos,
+                           const size_t endPos,
                            TReadNames const & readNames,
                            bool matchN,
                            TPatternSpec const &)

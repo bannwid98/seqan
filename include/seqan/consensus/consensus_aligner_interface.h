@@ -64,19 +64,19 @@ namespace seqan2 {
 
 /*!
  * @fn consensusAlignment
- * @headerfile <seqan/consensus.h>
- * @brief Compute consensus alignment.
+ * @headerfile <seqan/hapseq.h>
+ * @brief Compute hapseq alignment.
  *
  * @signature void consensusAlignment(store, options);
  *
- * @param[in,out] store   @link FragmentStore @endlink to use for consensus alignment computation.
+ * @param[in,out] store   @link FragmentStore @endlink to use for hapseq alignment computation.
  * @param[in]     options @link ConsensusAlignmentOptions @endlink with configuration.
  *
  * @throws ConsensusAlignerIllegalArgumentException in case of invalid arguments (e.g. two alignments for the same
  *                                                  read).
  *
- * This function computes a consensus alignment for a set of nucleic sequences that are stored in a @link FragmentStore
- * @endlink.  Often, consensus sequences are reads, but they could also be other sequences, such as RNA transcripts.
+ * This function computes a hapseq alignment for a set of nucleic sequences that are stored in a @link FragmentStore
+ * @endlink.  Often, hapseq sequences are reads, but they could also be other sequences, such as RNA transcripts.
  * However, in the following description we call them reads.
  *
  * This function uses the @link FragmentStore::contigStore @endlink, @link FragmentStore::alignedReadStore @endlink,
@@ -121,14 +121,14 @@ namespace seqan2 {
  *
  * The following example program takes a reference sequence and creates overlapping reads from it.  These are then added
  * to <tt>store</tt> with approximate positions (adding and subtracting a few positions).  The function
- * <tt>consensusAlignment()</tt> is then used to compute a MSA and the consensus sequence is stored in
+ * <tt>consensusAlignment()</tt> is then used to compute a MSA and the hapseq sequence is stored in
  * <tt>store.contigStore[0].seq</tt>.
  *
- * @include demos/dox/consensus/consensus_alignment.cpp
+ * @include demos/dox/hapseq/consensus_alignment.cpp
  *
  * The output is as follows:
  *
- * @include demos/dox/consensus/consensus_alignment.cpp.stdout
+ * @include demos/dox/hapseq/consensus_alignment.cpp.stdout
  */
 
 template <typename TSpec, typename TConfig>

@@ -62,10 +62,10 @@ struct SeqConsOptions
     {
         NOP = 0,            // do nothing, just convert files
         REALIGN = 1,        // just realign, only works with SAM input
-        POS_CONSENSUS = 2,  // consensus, interpreting positions
-        CTG_CONSENSUS = 3,  // consensus, interpreting contig information
-        OVL_CONSENSUS = 4,  // "de novo" consensus, just overlap MSA and consensus
-        ALN_CONSENSUS = 5   // "de novo" consensus, just global MSA and consensus
+        POS_CONSENSUS = 2,  // hapseq, interpreting positions
+        CTG_CONSENSUS = 3,  // hapseq, interpreting contig information
+        OVL_CONSENSUS = 4,  // "de novo" hapseq, just overlap MSA and hapseq
+        ALN_CONSENSUS = 5   // "de novo" hapseq, just global MSA and hapseq
     };
 
     // The operation to perform.
@@ -77,7 +77,7 @@ struct SeqConsOptions
 
     // Path to the input file.
     std::string inputFile;
-    // Path to the output files for read alignments and resulting consensus.
+    // Path to the output files for read alignments and resulting hapseq.
     std::string outputFileAlignment;
     std::string outputFileConsensus;
 

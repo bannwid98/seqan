@@ -60,7 +60,7 @@ namespace seqan2 {
 
 /*!
  * @class ConsensusAlignerIllegalArgumentException
- * @headerfile <seqan/consensus.h>
+ * @headerfile <seqan/hapseq.h>
  * @brief Thrown in ConsensusAlignerInputException on invalid arguments.
  *
  * @signature class ConsensusAlignerException;
@@ -100,9 +100,9 @@ private:
 
     // The ids of the reads that had a reverse-complemented alignment.
     std::set<unsigned> rcIDs;
-    // The FragmentStore to use for consensus computation.
+    // The FragmentStore to use for hapseq computation.
     TFragmentStore & store;
-    // The configuration of the consensus alignment.
+    // The configuration of the hapseq alignment.
     ConsensusAlignmentOptions const & options;
 };
 
@@ -164,7 +164,7 @@ inline void ConsensusAligner_<TFragmentStore>::run()
     // TODO(holtgrew): Pick pairwise best alignments.
 
     if (options.verbosity >= 1)
-        std::cerr << "building consensus...\n";
+        std::cerr << "building hapseq...\n";
     // Consensus builder.
     ConsensusBuilder_<TFragmentStore> consBuilder(options);
     consBuilder.run(store, overlapInfos);
